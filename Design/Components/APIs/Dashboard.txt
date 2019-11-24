@@ -1,0 +1,53 @@
+tenantSignUp(tenantName, password):
+	- add tenant to Tenants table in CSPDb database. tenantID. tenantSubnet = parse all subnets IPs, sort and take the next one. (account for the CloudServiceProvider's subnet).
+
+tenantLogin(tenantName):
+	- generate random session key, store in global variable. Encrypt with tenantPassword and send.
+	- All further messages will be encrypted with the session key. 
+
+decryptTenantMessage(message):
+	- access session key stored in the global variable and decrypt the client's message.
+
+tenantInitialize(webRole, workerRole, noOfWebRoles, noOfWorkerRoles): 
+	- create tenant host container (x.x.x.1), add to the TenantComponents table
+	- create specified number of webRoles and workerRoles, add to the TenantComponents table
+	- save WebRole and WorkerRole files locally, so that more can be created if needed.
+
+addWebRoles(noOfWebRoles):
+	- get list of all Web Role IPs by that tenant from TenantComponents, identify the nextIPs. (include the missing IPs - can be missing because the Web Roles no longer exist).
+	- create the number of webRoles specified and add them to the TenantComponents table and to the Loads table.
+
+addWorkerRoles(noOfWorkerRoles):
+	- get list of all Worker Role IPs by that tenant from TenantComponents, identify the nextIPs. (include the missing IPs - can be missing because the Web Roles no longer exist).
+	- create the number of webRoles specified and add them to the TenantComponents table and to the Loads table.
+
+removeComponent(componentID):
+	- used if some component fails (informed by HealthMonitor)
+	- delete container
+	- remove component from TenantComponents, Loads tables (only TenantComponents in case of Hosts)
+	- Notify the UI, with option to recreate (need to display metadata about the failed component from TenantComponents + Tenants tables).
+
+removeWebRoles(noOfWebRoles):
+	- x = list of non-active Web Role IPs (got from Load Balancer).
+	- if x < noOfWebRoles - error
+	- remove noOfWebRoles Web Roles randomly from x. Update the TenantComponents table and the Loads table.
+
+removeWorkerRoles(noOfWorkerRoles):
+	- x = list of non-active Web Role IPs (got from Load Balancer).
+	- if x < noOfWebRoles - error
+	- remove noOfWebRoles Web Roles randomly from x. Update the TenantComponents table and the Loads table.
+
+getTenantUsageStats(tenantName):
+	- return status of Web Roles, Worker Roles (being used currently or not) from LoadBalancer
+	- current loads of all components
+	- IP of each Web Role, Worker Role and time it was active for.
+
+getHealthStats():
+	- poll Health Monitor for stats of all components.
+	- report if any have shutdown/stopped.
+
+restartComponent(componentID):
+	- restart the component
+
+remake(moduleName):
+	• recreate the container, after destroying the old one.

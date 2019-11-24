@@ -1,0 +1,3 @@
+heartbeat():
+	- obtain IPs from TenantComponents and IPTables. Ping each component and form a message.
+	- send the message to Dashboard.

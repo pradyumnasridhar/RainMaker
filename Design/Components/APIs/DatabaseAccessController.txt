@@ -1,0 +1,4 @@
+convertQuery(query, tenantName):
+	- convert the query to the actual query
+	- query / exec on the database and fetch the results
+	- return the results

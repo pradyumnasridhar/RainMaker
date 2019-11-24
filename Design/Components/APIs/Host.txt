@@ -1,0 +1,6 @@
+globals:
+	- needs to store the tenantName
+
+obtainWebRole():
+	- call LoadBalancer's assignWebRole and ask for an IP address.
+	- forward requests to Web Role, and pass on the response.

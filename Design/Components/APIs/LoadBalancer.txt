@@ -1,0 +1,23 @@
+assignWebRole(tenantName, clientIP):
+	- lookup in the Loads table + TenantComponents table + Tenants table, sort based on Load, among eaqual, select based on affinity (clientIP).
+	- update the Loads table, set activeTime, currentStatus.
+
+assignWorkerRole(tenantName):
+	- lookup in the Loads table + TenantComponents table + Tenants table, sort based on Load, select the first one.
+	- update the Loads table, set activeTime, currentStatus.
+
+getListOfActiveWebRoles(tenantName):
+	- return currentStatus = 1
+
+getListOfInActiveWebRoles(tenantName):
+	- return currentStatus = 0
+
+getListOfActiveWorkerRoles(tenantName):
+	- return currentStatus = 0
+
+getListOfInActiveWorkerRoles(tenantName):
+	- return currentStatus = 1
+
+clearAffinity():
+	- run on a separate thread.
+	- clears old affinitys of inactive threads.

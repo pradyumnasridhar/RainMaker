@@ -1,0 +1,14 @@
+main():
+	• Create docker network. (use IP address from conf.json)
+	• Create and initialize Database, Load Balancer, Database Access Control and Health Monitor component
+	• Meta:
+		► write Database IP, Port, CSP Database details to LoadBalancer, Dashboard and HealthMonitor.
+		► write Database IP, Port, Tenant Database details to DatabaseAccessController.
+		► write LoadBalancer's IP and port to Host containers
+		► write LoadBalancer's + DatabaseAccessController's IP and port to WebRole
+		► write DatabaseAccessController's IP to WorkerRole
+		► ALL components which host Flask servers must also contain their AppPorts
+	• Create CSP and Tenant database users, CSP and Tenant databases, CSP and Tenant privileges.
+	• Create Components table in the CSPDb - it has the metadata of all existing containers. Contains componentID, componentName, userID (0 for CSP Components), IPAddress, AppPort, ContainerPort, type columns. Type can be 0 - CSP Component, 1 - host, 2 - Web Role or 3 - Worker Role.
+	• Create the Users table in the CSPDb - to store user credentials and user metadata. Has the userID, userName, userPasswordHash, userSubnet columns.
+	• Create Loads table with componentID, LoadValue , activeTime, currentStatus (0 - idle, 1 - active), Affinity columns for load balancing (affinity is an IPAddress).
